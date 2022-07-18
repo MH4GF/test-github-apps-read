@@ -1,0 +1,24 @@
+name: Read another repository
+
+on: [push]
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+      - uses: actions/github-script@v6
+        env:
+          TOKEN: ${{ steps.generate_token.outputs.token }}
+        with:
+          script: |
+            const result = await github.rest.repos.getContent({
+              owner: "MH4GF",
+              repo: "test-github-apps-content",
+              path: 'sample.json'
+            })
+            console.log(result)
