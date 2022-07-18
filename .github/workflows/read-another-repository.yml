@@ -11,8 +11,14 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
-      - name: Use token
+      - uses: actions/github-script@v6
         env:
           TOKEN: ${{ steps.generate_token.outputs.token }}
-        run: |
-          echo "The generated token is masked: ${TOKEN}"
+        with:
+          script: |
+            const result = await github.rest.repos.getContent({
+              owner: "MH4GF",
+              repo: "test-github-apps-content",
+              path: 'sample.json'
+            })
+            console.log(result)
