@@ -12,9 +12,8 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
       - uses: actions/github-script@v6
-        env:
-          TOKEN: ${{ steps.generate_token.outputs.token }}
         with:
+          github-token: ${{ steps.generate_token.outputs.token }}
           script: |
             const result = await github.rest.repos.getContent({
               owner: "MH4GF",
